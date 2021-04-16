@@ -31,6 +31,8 @@ public class MainController {
         customerTree.insert(new Customer("Ulf",500));
         customerTree.insert(new Customer("Ralle",250));
         customerTree.insert(new Customer("Bernd",750));
+        customerTree.insert(new Customer("Vivienne",250));
+        customerTree.insert(new Customer("Valeria",750));
     }
 
     /**

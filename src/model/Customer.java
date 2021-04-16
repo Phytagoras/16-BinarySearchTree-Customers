@@ -61,5 +61,9 @@ public class Customer implements ComparableContent<Customer>{
         return (this.name.compareTo(pContent.getName())<0);
     }
 
+    @Override
+    public String toString(){
+        return "" + name + " x " + sales;
+    }
     //TODO 02: Überarbeite die Klasse so, dass sie in einem BinarySearchTree verwaltet werden kann. Kannst du auch ihre Darstellung im Baum effizient überarbeiten?
 }
