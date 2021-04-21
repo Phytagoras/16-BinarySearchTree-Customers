@@ -1,6 +1,7 @@
 package control;
 
 
+import com.sun.source.tree.BinaryTree;
 import model.BinarySearchTree;
 import model.Customer;
 import view.DrawingPanel;
@@ -91,11 +92,7 @@ public class MainController {
      */
     private String traverse(BinarySearchTree tree){
         //TODO 04:  Siehe Rückgabe. You can do it!
-        if(!tree.isEmpty()){
-            return traverse(tree.getLeftTree()) + " -[{" + tree.getContent().toString() + " }]- " + traverse(tree.getRightTree());
-        }else{
-            return "";
-        }
+         return (!tree.isEmpty())? traverse(tree.getLeftTree()) + " -[{" + tree.getContent().toString() + " }]- " + traverse(tree.getRightTree()): "" ;
     }
 
     /**
@@ -106,8 +103,11 @@ public class MainController {
     public String[] searchLastName(){
         //TODO 05: Umsetzung einer Teilaufgabe einer zurückliegenden Hausaufgabe.
         String[] output = new String[2];
-
-        return output;
+        BinarySearchTree<Customer> yeetTree = customerTree;
+        while(!yeetTree.getRightTree().isEmpty()){
+            yeetTree = yeetTree.getRightTree();
+        }
+        return new String[]{yeetTree.getContent().getName(), yeetTree.getContent().getSales() + ""};
     }
 
     /**
@@ -116,7 +116,10 @@ public class MainController {
      */
     public int sumUpSales(){
         //TODO 06:  Ein weiterer Algorithmus, der mit einer Traversierung einfach umsetzbar ist.
-        return -1;
+        return sumDownSales(customerTree);
+    }
+    private int sumDownSales(BinarySearchTree<Customer> yeetTree){
+        return yeetTree.isEmpty() ? 0: sumDownSales(yeetTree.getLeftTree())+ sumDownSales(yeetTree.getRightTree()) + yeetTree.getContent().getSales();
     }
 
     /**
@@ -127,7 +130,8 @@ public class MainController {
      */
     public boolean insert(String name, int sales){
         //TODO 07:  Erste Methode, die auf der Datenstruktur selbst konkret arbeitet und einige Methoden von ihr aufruft.
-        return false;
+        customerTree.insert(new Customer(name, sales));
+        return customerTree.search(new Customer(name, 0)) != null;
     }
 
     /**
