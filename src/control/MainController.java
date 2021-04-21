@@ -91,7 +91,11 @@ public class MainController {
      */
     private String traverse(BinarySearchTree tree){
         //TODO 04:  Siehe Rückgabe. You can do it!
-        return "Lege fest, wie die Daten ausgegeben werden sollen!";
+        if(!tree.isEmpty()){
+            return traverse(tree.getLeftTree()) + " -[{" + tree.getContent().toString() + " }]- " + traverse(tree.getRightTree());
+        }else{
+            return "";
+        }
     }
 
     /**
