@@ -3,6 +3,7 @@ package control;
 
 import model.BinarySearchTree;
 import model.Customer;
+import model.List;
 import view.DrawingPanel;
 import view.treeView.TreeNode;
 import view.treeView.TreePath;
@@ -12,11 +13,10 @@ import view.treeView.TreePath;
  */
 public class MainController {
 
-    //Attribute
-    private boolean surpriseIsSet;
-
     //Referenzen
     private final BinarySearchTree<Customer> customerTree;
+    //Attribute
+    private boolean surpriseIsSet;
 
     public MainController(){
         surpriseIsSet = false;
@@ -173,8 +173,8 @@ public class MainController {
     public String[] searchName(String name){
         //TODO 09: Setze eine Methode zum Suchen eines konkreten Objekts um.
         Customer customer = customerTree.search(new Customer(name, 0));
-        if(customer != null){
-            return new String[]{name,customer.getSales()  + ""};
+        if (customer != null){
+            return new String[]{name, customer.getSales() + ""};
         }
         return null;
 
@@ -189,8 +189,20 @@ public class MainController {
      */
     public String[] searchSales(int sales){
         //TODO 10: Diese Suche ist deutlich schwieriger umzusetzen als die vorherige. Welche Schwierigkeit ergibt sich hier?
-        String[] output = new String[ 1 ];
-        return output;
+
+        return searchSales(customerTree, sales);
+    }
+
+    private String[] searchSales(BinarySearchTree<Customer> yeetTree, int sales){
+        if (yeetTree.isEmpty()) return null;
+        if (yeetTree.getContent().getSales() != sales){
+            String[] tmp = searchSales(yeetTree.getLeftTree(), sales);
+            if (tmp != null){
+                return tmp;
+            }
+            return searchSales(yeetTree.getRightTree(), sales);
+        }
+        return new String[]{yeetTree.getContent().getName(), yeetTree.getContent().getSales() + ""};
     }
 
 
@@ -205,9 +217,32 @@ public class MainController {
      */
     public String[][] listUpperNames(String name){
         //TODO 11: Halbwegs sinnvolle Verknüpfung verschiedener Datenstrukturen zur Übung.
-
-        String[][] output = new String[ 1 ][ 2 ];
+        List<Customer> customerList = new List<>();
+        listNamesBigger(name, customerList, customerTree);
+        customerList.toFirst();
+        int count = 0;
+        while (customerList.hasAccess()) {
+            customerList.next();
+            count++;
+        }
+        String[][] output = new String[ count ][ 2 ];
+        customerList.toFirst();
+        for (int i = 0; i < count; i++) {
+            output[ i ][ 0 ] = customerList.getContent().getName();
+            output[ i ][ 1 ] = customerList.getContent().getSales() + "";
+            customerList.next();
+        }
         return output;
+    }
+
+    private void listNamesBigger(String name, List<Customer> list, BinarySearchTree<Customer> yeetTree){
+        if (!yeetTree.isEmpty()){
+            listNamesBigger(name, list, yeetTree.getLeftTree());
+            if (yeetTree.getContent().getName().compareTo(name) > 0){
+                list.append(yeetTree.getContent());
+            }
+            listNamesBigger(name, list, yeetTree.getRightTree());
+        }
     }
 
     /**
