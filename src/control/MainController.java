@@ -237,8 +237,8 @@ public class MainController {
 
     private void listNamesBigger(String name, List<Customer> list, BinarySearchTree<Customer> yeetTree){
         if (!yeetTree.isEmpty()){
-            listNamesBigger(name, list, yeetTree.getLeftTree());
             if (yeetTree.getContent().getName().compareTo(name) > 0){
+                listNamesBigger(name, list, yeetTree.getLeftTree());
                 list.append(yeetTree.getContent());
             }
             listNamesBigger(name, list, yeetTree.getRightTree());
